@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar fixed-top navbar-expand bg-primary">
+  <div class="navbar navbar-expand bg-primary">
     <div class="container">
       <router-link to="/" class="navbar-brand">Painter</router-link>
       <div class="navbar-nav ml-auto">

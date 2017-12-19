@@ -153,10 +153,9 @@
 
     .button-bar {
       text-align: left;
-      padding: 0 20px;
+      padding: 10px 20px;
       z-index: 20;
       position: absolute;
-      top: 60px;
 
       i {
         margin-right: 16px;
