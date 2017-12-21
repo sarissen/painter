@@ -1,13 +1,16 @@
 <template>
   <div ref="container" class="container-fluid">
     <div class="button-bar">
-      <i class="fa fa-2x fa-save"></i>
-      <a href="javascript:void(0)" @click="download"><i class="fa fa-2x fa-download"></i></a>
-      <input type="file" id="upload" style="display: none;" @change="addFile"><label for="upload"><i class="fa fa-2x fa-upload"></i></label>
-      <i class="fa fa-2x fa-trash" @click="clear"></i>
-      <i class="fa fa-2x fa-eraser" :class="[state === 'erasing' ? 'eraser-active' : '']" @click="toggleEraser"></i>
-      <input type="color" v-model="color">
-      <input class="form-control" type="number" min="1" v-model="lineWidth">
+      <a href="javascript:void(0)" @click="save" title="Save"><i class="fa fa-2x fa-save"></i></a>
+      <a href="javascript:void(0)" @click="download" title="Download image"><i class="fa fa-2x fa-download"></i></a>
+      <input type="file" id="upload" style="display: none;" @change="addFile" title="Upload image"><label for="upload"><i class="fa fa-2x fa-upload"></i></label>
+      <i class="fa fa-2x fa-trash" @click="clear" title="Clear"></i>
+      <i class="fa fa-2x fa-eraser" :class="[state === 'erasing' ? 'eraser-active' : '']" @click="toggleEraser" title="Erase"></i>
+      <input type="color" v-model="color" title="Choose color">
+      <input class="form-control" type="number" min="1" v-model="lineWidth" title="Choose linewidth">
+    </div>
+    <div v-if="showAlert" class="alert alert-success" role="alert">
+      Image successfully saved to gallery!
     </div>
     <canvas ref="canvas" id="paint" v-on:mousedown="startDraw" v-on:mouseout="stopDraw" v-on:mouseup="stopDraw" v-on:mousemove="draw" v-on:touchstart="startDraw" v-on:touchend="stopDraw" v-on:touchmove="draw" v-on:touchcancel="stopDraw">
     </canvas>
@@ -19,6 +22,8 @@
 
   import Position from './../classes/Position';
   import Utils from './../classes/Utils';
+  import axios from 'axios';
+  import store from './../classes/Store';
 
   export default {
     name: 'PaintCanvas',
@@ -30,6 +35,8 @@
         color: 'black',
         lineWidth: 2,
         state: 'drawing',
+        shared: store.state,
+        showAlert: false,
       };
     },
     methods: {
@@ -113,6 +120,24 @@
         element.href = this.$refs.canvas.toDataURL();
         element.download = 'painter.png';
       },
+      save(event) {
+        const form = new FormData();
+        const dataUrl = this.$refs.canvas.toDataURL();
+        form.append('imageData', dataUrl);
+
+        axios.post(`${this.shared.baseUrl}/image`, form)
+          .then((response) => {
+            // eslint-disable-next-line
+            console.log('image saved');
+            this.showAlert = true;
+
+            setTimeout(() => { this.showAlert = false; }, 2000);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error);
+          });
+      },
       addFile(event) {
         const reader = new FileReader();
 
@@ -175,6 +200,11 @@
       input[type=number] {
         width: 80px;
       }
+    }
+
+    .alert {
+      position: relative;
+      top: 72px;
     }
   }
 

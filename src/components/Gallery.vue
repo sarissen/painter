@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid gallery">
-    <router-link :to="{ name: 'GalleryImage', params: { id: image.id } }" v-for="image in images" :key="image.id">
-      <div class="col-sm-3 card">
-        <div class="card-block">
+    <div class="row" style="padding: 60px;">
+      <router-link style="margin-bottom: 40px;border:none;" class="col-sm-4 card" :to="{ name: 'GalleryImage', params: { id: image.id } }" v-for="image in images" :key="image.id">
+        <div class="card-block" style="border: 1px solid rgba(0, 0, 0, 0.125)">
           <img class="card-img-top" :src="image.path" :alt="image.id">
         </div>
-      </div>
-    </router-link>
+      </router-link>
+    </div>
   </div>
 </template>
 
