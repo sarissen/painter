@@ -235,7 +235,7 @@
 
     .alert {
       position: relative;
-      top: 72px;
+      top: 100px;
     }
   }
 
