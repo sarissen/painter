@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid" style="margin-top: 20px;">
-    <img style="max-width: 1600px;margin:auto;margin-bottom: 40px;" :src="image.path" :alt="image.id">
+    <img style="max-width: 100%;margin:auto;margin-bottom: 40px;" :src="image.path" :alt="image.id">
 
     <div>
       <span class="color" :title="color" v-for="color in image.colors" :style="{ backgroundColor: color }">

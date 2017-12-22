@@ -12,7 +12,7 @@
     <div v-if="showAlert" class="alert alert-success" role="alert">
       Image successfully saved to gallery!
     </div>
-    <canvas ref="canvas" id="paint" v-on:mousedown="startDraw" v-on:mouseout="stopDraw" v-on:mouseup="stopDraw" v-on:mousemove="draw" v-on:touchstart="startDraw" v-on:touchend="stopDraw" v-on:touchmove="draw" v-on:touchcancel="stopDraw">
+    <canvas ref="canvas" id="paint" v-on:mousedown="startDraw" v-on:mouseout="stopDraw" v-on:mouseup="stopDraw" v-on:mousemove="draw" v-on:touchstart="startTouch" v-on:touchend="stopDraw" v-on:touchmove="touch" v-on:touchcancel="stopDraw">
     </canvas>
   </div>
 </template>
@@ -57,6 +57,22 @@
           context.drawImage(imageObj, (canvas.width / 2) - (imageObj.width / 2), (canvas.height / 2) - (imageObj.height / 2));
         };
         imageObj.src = image;
+      },
+      startTouch(event) {
+        const touch = event.touches[0];
+        const mouseEvent = new MouseEvent('mousedown', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+        });
+        this.$refs.canvas.dispatchEvent(mouseEvent);
+      },
+      touch(event) {
+        const touch = event.touches[0];
+        const mouseEvent = new MouseEvent('mousemove', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+        });
+        this.$refs.canvas.dispatchEvent(mouseEvent);
       },
       startDraw(event) {
         const canvas = this.$refs.canvas;
@@ -160,6 +176,21 @@
       this.resize();
       window.addEventListener('resize', this.resize, false);
       this.loadImage();
+      document.body.addEventListener('touchstart', (e) => {
+        if (e.target == this.$refs.canvas) {
+          e.preventDefault();
+        }
+      }, {passive: false});
+      document.body.addEventListener('touchend', (e) => {
+        if (e.target == this.$refs.canvas) {
+          e.preventDefault();
+        }
+      }, {passive: false});
+      document.body.addEventListener('touchmove', (e) => {
+        if (e.target == this.$refs.canvas) {
+          e.preventDefault();
+        }
+      }, {passive: false});
     },
   };
 </script>
