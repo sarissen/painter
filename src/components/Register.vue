@@ -39,7 +39,7 @@
         axios.post(`${this.shared.baseUrl}/user`, formData)
           .then((response) => {
             // eslint-disable-next-line
-            console.log('user saved');
+            console.log(response.data);
             this.$router.push({ name: 'Login' });
           })
           .catch((error) => {

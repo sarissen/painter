@@ -20,7 +20,8 @@
     export default {
       name: 'PageHeader',
       watch: {
-        '$route' (to, from) {
+        // eslint-disable-next-line
+        '$route'() {
           this.getUser();
         },
       },

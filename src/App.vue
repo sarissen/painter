@@ -11,16 +11,19 @@
 
   axios.interceptors.request.use((config) => {
     const token = sessionStorage.getItem('token');
+    const result = config;
+    // eslint-disable-next-line
     console.log('interceptor');
     if (token) {
       if (config.headers) {
-        config.headers.Authorization = `Bearer ${token}`;
+        result.headers.Authorization = `Bearer ${token}`;
       } else {
-        config.headers = { Authorization: `Bearer ${token}` };
+        result.headers = { Authorization: `Bearer ${token}` };
       }
     }
-    return config;
+    return result;
   }, (error) => {
+    // eslint-disable-next-line
     console.log('interceptor error');
     return Promise.reject(error);
   });

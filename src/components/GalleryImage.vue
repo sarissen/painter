@@ -35,7 +35,6 @@
               // eslint-disable-next-line
               console.log(response.data);
               this.image = Object.assign({}, this.image, response.data);
-              console.log(this.image);
             })
             .catch((error) => {
               // eslint-disable-next-line

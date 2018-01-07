@@ -136,13 +136,13 @@
         element.href = this.$refs.canvas.toDataURL();
         element.download = 'painter.png';
       },
-      save(event) {
+      save() {
         const form = new FormData();
         const dataUrl = this.$refs.canvas.toDataURL();
         form.append('imageData', dataUrl);
 
         axios.post(`${this.shared.baseUrl}/image`, form)
-          .then((response) => {
+          .then(() => {
             // eslint-disable-next-line
             console.log('image saved');
             this.showAlert = true;
@@ -177,17 +177,17 @@
       window.addEventListener('resize', this.resize, false);
       this.loadImage();
       document.body.addEventListener('touchstart', (e) => {
-        if (e.target == this.$refs.canvas) {
+        if (e.target === this.$refs.canvas) {
           e.preventDefault();
         }
       }, { passive: false });
       document.body.addEventListener('touchend', (e) => {
-        if (e.target == this.$refs.canvas) {
+        if (e.target === this.$refs.canvas) {
           e.preventDefault();
         }
       }, { passive: false });
       document.body.addEventListener('touchmove', (e) => {
-        if (e.target == this.$refs.canvas) {
+        if (e.target === this.$refs.canvas) {
           e.preventDefault();
         }
       }, { passive: false });
