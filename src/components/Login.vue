@@ -43,8 +43,8 @@
         axios.post(`${this.shared.baseUrl}/oauth/token`, formData)
           .then((response) => {
             // eslint-disable-next-line
-            console.log('logged in');
-            this.shared.token = response.access_token;
+            console.log(response.data.access_token);
+            sessionStorage.setItem('token', response.data.access_token);
             this.$router.push({ name: 'Home' });
           })
           .catch((error) => {

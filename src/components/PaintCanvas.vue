@@ -180,17 +180,17 @@
         if (e.target == this.$refs.canvas) {
           e.preventDefault();
         }
-      }, {passive: false});
+      }, { passive: false });
       document.body.addEventListener('touchend', (e) => {
         if (e.target == this.$refs.canvas) {
           e.preventDefault();
         }
-      }, {passive: false});
+      }, { passive: false });
       document.body.addEventListener('touchmove', (e) => {
         if (e.target == this.$refs.canvas) {
           e.preventDefault();
         }
-      }, {passive: false});
+      }, { passive: false });
     },
   };
 </script>

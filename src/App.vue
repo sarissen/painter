@@ -8,16 +8,15 @@
 <script>
   import axios from 'axios';
   import PageHeader from './components/PageHeader';
-  import Store from './classes/Store';
 
   axios.interceptors.request.use((config) => {
-    const shared = Store.state;
+    const token = sessionStorage.getItem('token');
     console.log('interceptor');
-    if (shared.token) {
+    if (token) {
       if (config.headers) {
-        config.headers.Authorization = `Bearer ${shared.token}`;
+        config.headers.Authorization = `Bearer ${token}`;
       } else {
-        config.headers = { Authorization: `Bearer ${shared.token}` };
+        config.headers = { Authorization: `Bearer ${token}` };
       }
     }
     return config;

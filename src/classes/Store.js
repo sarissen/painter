@@ -4,7 +4,6 @@ const store = {
     baseUrl: 'http://api.localhost/api/v1',
     clientId: '2',
     clientSecret: 'GhN7uUL46s8wScNQZ7jLbAxzhJK2hTnFLESoq3ZY',
-    token: null,
   },
   /* setMessageAction(newValue) {
     if (this.debug) {
@@ -19,5 +18,7 @@ const store = {
     this.state.message = '';
   }, */
 };
+
+window.store = store;
 
 export default store;
