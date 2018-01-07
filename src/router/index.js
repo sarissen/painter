@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import PaintCanvas from '@/components/PaintCanvas';
 import Gallery from '@/components/Gallery';
 import GalleryImage from '@/components/GalleryImage';
+import Register from '@/components/Register';
+import Login from '@/components/Login';
 
 Vue.use(Router);
 
@@ -24,6 +26,18 @@ export default new Router({
       path: '/gallery/:id',
       name: 'GalleryImage',
       component: GalleryImage,
+      props: true,
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register,
+      props: true,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
       props: true,
     },
   ],

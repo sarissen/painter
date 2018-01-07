@@ -6,7 +6,25 @@
 </template>
 
 <script>
+  import axios from 'axios';
   import PageHeader from './components/PageHeader';
+  import Store from './classes/Store';
+
+  axios.interceptors.request.use((config) => {
+    const shared = Store.state;
+    console.log('interceptor');
+    if (shared.token) {
+      if (config.headers) {
+        config.headers.Authorization = `Bearer ${shared.token}`;
+      } else {
+        config.headers = { Authorization: `Bearer ${shared.token}` };
+      }
+    }
+    return config;
+  }, (error) => {
+    console.log('interceptor error');
+    return Promise.reject(error);
+  });
 
   export default {
     components: { PageHeader },

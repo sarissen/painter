@@ -20,9 +20,9 @@
 <script>
   /* eslint-disable max-len */
 
+  import axios from 'axios';
   import Position from './../classes/Position';
   import Utils from './../classes/Utils';
-  import axios from 'axios';
   import store from './../classes/Store';
 
   export default {
