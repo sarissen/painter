@@ -3,7 +3,7 @@ const store = {
   state: {
     baseUrl: 'http://api.localhost/api/v1',
     clientId: '2',
-    clientSecret: 'GhN7uUL46s8wScNQZ7jLbAxzhJK2hTnFLESoq3ZY',
+    clientSecret: '9ySM1g1vXcXdLeUdl6LdW6wOhAm84a6Qe1PhNzTy',
   },
   /* setMessageAction(newValue) {
     if (this.debug) {
