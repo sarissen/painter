@@ -50,6 +50,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
+    // provide jquery globally
+    new webpack.ProvidePlugin({
+      $: 'jquery'
+    })
   ]
 })
 
