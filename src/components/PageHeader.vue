@@ -1,19 +1,26 @@
 <template>
-  <div class="navbar navbar-expand bg-primary">
+  <div class="navbar navbar-expand-sm  navbar-dark bg-primary">
     <div class="container">
       <router-link to="/" class="navbar-brand">Painter</router-link>
-      <div class="navbar-nav ml-auto">
-        <span class="user">{{ user.name }}</span>
-        <router-link v-if="loggedOut" class="btn btn-secondary" to="/register"><i class="fa fa-user fa-lg mr-2"></i>Register</router-link>
-        <router-link v-if="loggedOut" class="btn btn-secondary" to="/login"><i class="fa fa-sign-in fa-lg mr-2"></i>Login</router-link>
-        <a href="javascript:void(0)" class="btn btn-secondary" @click="logout" v-else><i class="fa fa-sign-in fa-lg mr-2"></i>Logout</a>
-        <router-link class="btn btn-secondary" :to="swap"><i class="fa fa-folder fa-lg mr-2"></i>{{ swapText }}</router-link>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar-content">
+        <div class="navbar-nav ml-auto">
+          <span class="user">{{ user.name }}</span>
+          <router-link v-if="loggedOut" class="btn btn-secondary" to="/register"><i class="fa fa-user fa-lg mr-2"></i>Register</router-link>
+          <router-link v-if="loggedOut" class="btn btn-secondary" to="/login"><i class="fa fa-sign-in fa-lg mr-2"></i>Login</router-link>
+          <a href="javascript:void(0)" class="btn btn-secondary" @click="logout" v-else><i class="fa fa-sign-in fa-lg mr-2"></i>Logout</a>
+          <router-link class="btn btn-secondary" :to="swap"><i class="fa fa-folder fa-lg mr-2"></i>{{ swapText }}</router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+    import 'bootstrap/js/src/collapse';
+
     import axios from 'axios';
     import Store from './../classes/Store';
 
@@ -84,7 +91,12 @@
 
   .navbar-nav {
     a {
-      margin-left: 10px;
+      margin-top: 5px;
+
+      @media screen and (min-width: 576px) {
+        margin-left: 10px;
+        margin-top: 0;
+      }
     }
   }
 
