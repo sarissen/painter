@@ -5,6 +5,7 @@ import Gallery from '@/components/Gallery';
 import GalleryImage from '@/components/GalleryImage';
 import Register from '@/components/Register';
 import Login from '@/components/Login';
+import Lobby from '@/components/Lobby';
 
 Vue.use(Router);
 
@@ -38,6 +39,12 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login,
+      props: true,
+    },
+    {
+      path: '/lobby/:id?',
+      name: 'Lobby',
+      component: Lobby,
       props: true,
     },
   ],

@@ -8,6 +8,7 @@
       <div class="collapse navbar-collapse" id="navbar-content">
         <div class="navbar-nav ml-auto">
           <span class="user">{{ user.name }}</span>
+          <router-link v-if="loggedIn" class="btn btn-secondary" to="/lobby"><i class="fa fa-list fa-lg mr-2"></i>Create lobby</router-link>
           <router-link v-if="loggedOut" class="btn btn-secondary" to="/register"><i class="fa fa-user fa-lg mr-2"></i>Register</router-link>
           <router-link v-if="loggedOut" class="btn btn-secondary" to="/login"><i class="fa fa-sign-in fa-lg mr-2"></i>Login</router-link>
           <a href="javascript:void(0)" class="btn btn-secondary" @click="logout" v-else><i class="fa fa-sign-in fa-lg mr-2"></i>Logout</a>
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-    import 'bootstrap/js/src/collapse';
+    // import 'bootstrap/js/src/collapse';
 
     import axios from 'axios';
     import Store from './../classes/Store';
@@ -45,6 +46,7 @@
               // eslint-disable-next-line
               console.log(response.data);
               this.user = response.data;
+              this.shared.user = this.user;
             })
             .catch((error) => {
               // eslint-disable-next-line
@@ -72,8 +74,11 @@
         loggedOut() {
           return Object.keys(this.user).length === 0 && this.user.constructor === Object;
         },
+        loggedIn() {
+          return !this.loggedOut;
+        },
       },
-      mounted() {
+      created() {
         this.getUser();
       },
     };

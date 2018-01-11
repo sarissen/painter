@@ -1,3 +1,4 @@
+import io from 'socket.io-client';
 import secret from '../../config/clientsecret';
 
 const store = {
@@ -6,6 +7,8 @@ const store = {
     baseUrl: 'http://api.localhost/api/v1',
     clientId: '2',
     clientSecret: secret,
+    socket: io(`${window.location.hostname}:3000`),
+    user: {},
   },
   /* setMessageAction(newValue) {
     if (this.debug) {
