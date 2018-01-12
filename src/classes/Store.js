@@ -1,11 +1,13 @@
-import secret from '../../config/clientsecret';
+import io from 'socket.io-client';
 
 const store = {
   debug: true,
   state: {
-    baseUrl: 'http://api.localhost/api/v1',
+    baseUrl: process.env.API_ENDPOINT,
     clientId: '2',
-    clientSecret: secret,
+    clientSecret: process.env.CLIENT_SECRET,
+    socket: process.env.ENABLE_SOCKETIO ? io(`${window.location.hostname}:3000`) : null,
+    user: {},
   },
   /* setMessageAction(newValue) {
     if (this.debug) {
