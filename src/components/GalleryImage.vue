@@ -41,12 +41,20 @@
           </div>
 
           <div class="card bg-light mb-3" v-for="comment in comments">
-            <div class="card-body">
-              <h5 class="card-title">
-                <span class="fa fa-user"></span> {{comment.author}},
-                <span>{{comment.created_at}}</span>
-                <span class="text-muted" v-if="comment.created_at !== comment.updated_at"> (edited)</span>
-              </h5>
+            <div class="card-body" style="text-align: left;">
+              <div class="card-title row justify-content-between">
+                <div class="col">
+                  <h5>
+                    <span class="fa fa-user fa-fw d-none d-sm-inline-block"></span> {{comment.author}}
+                    <span class="d-none d-sm-inline-block"> {{comment.created_at}}</span>
+                    <span class="text-muted" v-if="comment.created_at !== comment.updated_at"> (edited)</span>
+                  </h5>
+                </div>
+                <div class="col-auto">
+                  <span class="fa fa-pencil fa-lg fa-fw comment-edit" v-if="comment.author === shared.user.name"></span>
+                  <span class="fa fa-times fa-lg fa-fw comment-delete" v-if="comment.author === shared.user.name"></span>
+                </div>
+              </div>
               <p class="card-text">
                 {{comment.text}}
               </p>
@@ -173,8 +181,16 @@
     margin-bottom: 40px;
   }
 
-  #like-button:hover {
+  #like-button:hover, .comment-edit:hover, .comment-delete:hover {
     cursor: pointer;
+  }
+
+  .comment-edit:hover {
+    color: blue;
+  }
+
+  .comment-delete:hover {
+    color: red;
   }
 
 </style>
