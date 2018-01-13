@@ -9,7 +9,7 @@
   import PaintCanvas from './PaintCanvas';
   import store from './../classes/Store';
 
-  const choices = ['dog', 'cat', 'school', 'shop', 'bicycle', 'car'];
+  const choices = ['dog', 'cat', 'school', 'shop', 'bicycle', 'car', 'axe', 'computer', 'clock', 'chess', 'phone', 'desk', 'curtain', 'table', 'chair', 'wallet', 'key', 'book', 'glasses', 'backpack', 'tree'];
 
   export default {
     components: { PaintCanvas },
