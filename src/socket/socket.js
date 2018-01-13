@@ -59,6 +59,16 @@ io.on('connection', (socket) => {
     console.log('Received a canvas');
     socket.broadcast.emit('canvas', canvas);
   });
+
+  socket.on('word', (word) => {
+    console.log('Received a word');
+    socket.broadcast.emit('word', word);
+  });
+
+  socket.on('requestWord', () => {
+    console.log('Received a word request');
+    socket.broadcast.emit('requestWord');
+  });
 });
 
 console.log(`Server running at http://127.0.0.1:${port}/`);

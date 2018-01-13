@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    Draw a: {{ choice }}
+    <div class="choice">Draw a: {{ choice }}</div>
     <paint-canvas @canvas-change="canvasChanged"/>
   </div>
 </template>
@@ -25,9 +25,17 @@
         const socket = this.shared.socket;
         socket.emit('canvas', dataUrl);
       },
+      socketListeners() {
+        const socket = this.shared.socket;
+        socket.on('requestWord', () => {
+          this.shared.socket.emit('word', this.choice);
+        });
+      },
     },
     mounted() {
       this.choice = choices[Math.floor(Math.random() * choices.length)];
+      this.shared.socket.emit('word', this.choice);
+      this.socketListeners();
     },
   };
 </script>
@@ -35,5 +43,11 @@
 <style scoped lang="scss">
   .page {
     height: 100%;
+    margin-top: 10px;
+  }
+
+  .choice {
+    font-size: 20px;
+    font-weight: bold;
   }
 </style>
