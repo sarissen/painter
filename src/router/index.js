@@ -50,13 +50,13 @@ export default new Router({
       props: true,
     },
     {
-      path: '/drawgame/creator',
+      path: '/drawgame/creator/:id',
       name: 'DrawCreator',
       component: DrawCreator,
       props: true,
     },
     {
-      path: '/drawgame/viewer',
+      path: '/drawgame/viewer/:id',
       name: 'DrawViewer',
       component: DrawViewer,
       props: true,

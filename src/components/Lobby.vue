@@ -85,7 +85,7 @@
         });
         socket.on('starting', () => {
           console.log('Starting the game');
-          this.$router.push('/drawgame/viewer');
+          this.$router.push(`/drawgame/viewer/${this.identifier}`);
         });
       },
       createLobby() {
@@ -105,7 +105,7 @@
         const socket = this.shared.socket;
         console.log('Starting game');
         socket.emit('starting');
-        this.$router.push('/drawgame/creator');
+        this.$router.push(`/drawgame/creator/${this.identifier}`);
       },
     },
   };
