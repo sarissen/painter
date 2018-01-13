@@ -55,6 +55,7 @@
 
         imageObj.onload = () => {
           context.drawImage(imageObj, (canvas.width / 2) - (imageObj.width / 2), (canvas.height / 2) - (imageObj.height / 2));
+          this.$emit('canvas-change', this.$refs.canvas.toDataURL());
         };
         imageObj.src = image;
       },
@@ -97,6 +98,7 @@
           } else if (this.state === 'erasing') {
             this.erasePath(this.prevPosition, this.currPosition);
           }
+          this.$emit('canvas-change', this.$refs.canvas.toDataURL());
         }
       },
       drawPath(startPosition, endPosition) {
@@ -170,6 +172,7 @@
       clear() {
         const canvas = this.$refs.canvas;
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        this.$emit('canvas-change', this.$refs.canvas.toDataURL());
       },
     },
     mounted() {

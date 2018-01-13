@@ -49,6 +49,16 @@ io.on('connection', (socket) => {
     console.log(`${member} is sending over member data`);
     socket.broadcast.emit('member', member);
   });
+
+  socket.on('starting', () => {
+    console.log('Starting a game');
+    socket.broadcast.emit('starting');
+  });
+
+  socket.on('canvas', (canvas) => {
+    console.log('Received a canvas');
+    socket.broadcast.emit('canvas', canvas);
+  });
 });
 
 console.log(`Server running at http://127.0.0.1:${port}/`);
