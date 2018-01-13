@@ -13,6 +13,7 @@
           <router-link v-if="loggedOut" class="btn btn-secondary" to="/login"><i class="fa fa-sign-in fa-lg mr-2"></i>Login</router-link>
           <a href="javascript:void(0)" class="btn btn-secondary" @click="logout" v-else><i class="fa fa-sign-in fa-lg mr-2"></i>Logout</a>
           <router-link class="btn btn-secondary" :to="swap"><i class="fa fa-folder fa-lg mr-2"></i>{{ swapText }}</router-link>
+          <a href="javascript:void(0)" v-if="shareable" class="btn btn-secondary" @click="share"><i class="fa fa-share fa-lg mr-2"></i>Share</a>
         </div>
       </div>
     </div>
@@ -57,6 +58,9 @@
           sessionStorage.removeItem('token');
           this.getUser();
         },
+        share() {
+          this.shared.openModal = true;
+        },
       },
       computed: {
         swap() {
@@ -76,6 +80,9 @@
         },
         loggedIn() {
           return !this.loggedOut;
+        },
+        shareable() {
+          return this.$route.name === 'GalleryImage'/* && this.loggedIn */;
         },
       },
       created() {

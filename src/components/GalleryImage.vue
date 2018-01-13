@@ -1,22 +1,29 @@
 <template>
-  <div class="container-fluid" style="margin-top: 20px;">
-    <img style="max-width: 100%;margin:auto;margin-bottom: 40px;" :src="image.path" :alt="image.id">
+  <div>
+    <share :image_path=this.image.path :gallery_path=$route.path></share>
+    <div class="container-fluid" style="margin-top: 20px;">
+      <img style="max-width: 100%;margin:auto;margin-bottom: 40px;" :src="image.path" :alt="image.id">
 
-    <div>
-      <span class="color" :title="color" v-for="color in image.colors" :style="{ backgroundColor: color }">
-      </span>
+      <div>
+        <span class="color" :title="color" v-for="color in image.colors" :style="{ backgroundColor: color }">
+        </span>
+      </div>
+      <div>{{ image.width }} x {{ image.height }}</div>
+      <div>{{ image.size }} bytes</div>
     </div>
-    <div>{{ image.width }} x {{ image.height }}</div>
-    <div>{{ image.size }} bytes</div>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
   import store from './../classes/Store';
+  import Share from './Share.vue';
 
   export default {
     name: 'gallery-image',
+    components: {
+      'Share': Share,
+    },
     props: ['id'],
     data() {
       return {
