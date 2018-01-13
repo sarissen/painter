@@ -31,7 +31,7 @@
           </h3>
         </div>
         <div class="card-body">
-          <div class="mb-5">
+          <div class="mb-5" v-if="Object.keys(shared.user).length !== 0 && shared.user.constructor === Object">
             <form @submit.prevent="submitComment" ref="form">
               <div class="form-group">
                 <textarea class="form-control" id="text" name="text" placeholder="Enter your comment" rows="3"></textarea>
@@ -39,6 +39,7 @@
               <button type="submit" class="btn btn-primary">Add comment</button>
             </form>
           </div>
+          <div class="alert alert-info mb-5" role="alert" v-else><span class="fa fa-info"></span> Log in to write a comment</div>
 
           <div class="card bg-light mb-3" v-for="comment in comments">
             <div class="card-body" style="text-align: left;">
@@ -51,13 +52,20 @@
                   </h5>
                 </div>
                 <div class="col-auto">
-                  <span class="fa fa-pencil fa-lg fa-fw comment-edit" v-if="comment.author === shared.user.name"></span>
-                  <span class="fa fa-times fa-lg fa-fw comment-delete" v-if="comment.author === shared.user.name"></span>
+                  <span class="fa fa-pencil fa-lg fa-fw comment-edit" v-on:click="toggleEditForm(comment)" v-if="comment.author === shared.user.name"></span>
+                  <span class="fa fa-times fa-lg fa-fw comment-delete" v-on:click="deleteComment(comment.id)" v-if="comment.author === shared.user.name"></span>
                 </div>
               </div>
               <p class="card-text">
                 {{comment.text}}
               </p>
+              <form @submit.prevent="editComment(comment)" ref="edit" :id="comment.id" class="d-none">
+                <div class="form-group">
+                  <textarea class="form-control" name="text" rows="3" title="Edit text" v-model="editText"></textarea>
+                </div>
+                <button class="btn btn-secondary" v-on:click="toggleEditForm(comment)">Cancel</button>
+                <button type="submit" class="btn btn-primary">Edit comment</button>
+              </form>
             </div>
           </div>
         </div>
@@ -67,6 +75,7 @@
 </template>
 
 <script>
+  import $ from 'jquery';
   import axios from 'axios';
   import store from './../classes/Store';
 
@@ -77,6 +86,7 @@
       return {
         image: {},
         comments: [],
+        editText: '',
         shared: store.state,
       };
     },
@@ -150,6 +160,47 @@
             this.comments.unshift(comment);
             // eslint-disable-next-line
             console.log(comment);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error);
+          });
+      },
+      toggleEditForm(comment) {
+        this.editText = comment.text;
+        $(`#${comment.id}`).toggleClass('d-none');
+      },
+      editComment(comment) {
+        const formData = new FormData();
+        formData.append('text', this.editText);
+        formData.append('grant_type', 'password');
+        formData.append('client_id', this.shared.clientId);
+        formData.append('client_secret', this.shared.clientSecret);
+        formData.append('scope', '*');
+        axios.post(`${this.shared.baseUrl}/comment/${comment.id}`, formData)
+          .then((response) => {
+            // eslint-disable-next-line
+            this.comments.find((el) => {
+              return el.id === comment.id;
+            }).text = response.data.text;
+            this.toggleEditForm(comment);
+            // eslint-disable-next-line
+            console.log(response);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error);
+          });
+      },
+      deleteComment(id) {
+        axios.delete(`${this.shared.baseUrl}/comment/${id}`)
+          .then((response) => {
+            // eslint-disable-next-line
+            console.log(response);
+            // eslint-disable-next-line
+            this.comments = this.comments.filter((el) => {
+              return el.id !== id;
+            });
           })
           .catch((error) => {
             // eslint-disable-next-line
