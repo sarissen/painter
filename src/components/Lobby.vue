@@ -10,7 +10,7 @@
       </li>
     </ul>
 
-    <a :if="creator" href="javascript:void(0)" class="btn btn-primary">Start</a>
+    <a v-if="creator" @click="startGame" href="javascript:void(0)" class="btn btn-primary">Start</a>
   </div>
 </template>
 
@@ -19,7 +19,7 @@
   import utils from './../classes/Utils';
 
   export default {
-    name: 'lobby',
+    name: 'Lobby',
     props: ['id'],
     data() {
       return {
@@ -83,6 +83,10 @@
           this.removeMember(member);
           console.log(`${member} left the room`);
         });
+        socket.on('starting', () => {
+          console.log('Starting the game');
+          this.$router.push(`/drawgame/viewer/${this.identifier}`);
+        });
       },
       createLobby() {
         const socket = this.shared.socket;
@@ -96,6 +100,12 @@
         console.log(`Joining room ${this.identifier}`);
         socket.emit('join', this.identifier, this.shared.user.name);
         this.members.push(this.shared.user.name);
+      },
+      startGame() {
+        const socket = this.shared.socket;
+        console.log('Starting game');
+        socket.emit('starting');
+        this.$router.push(`/drawgame/creator/${this.identifier}`);
       },
     },
   };

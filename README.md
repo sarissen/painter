@@ -18,4 +18,13 @@ npm run build
 npm run build --report
 ```
 
+## To also run socket.io
+
+``` bash
+# Make sure it is enabled in local.env.js
+
+# Start the node program
+node src/socket/socket.js
+```
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

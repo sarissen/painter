@@ -6,6 +6,8 @@ import GalleryImage from '@/components/GalleryImage';
 import Register from '@/components/Register';
 import Login from '@/components/Login';
 import Lobby from '@/components/Lobby';
+import DrawCreator from '@/components/DrawCreator';
+import DrawViewer from '@/components/DrawViewer';
 
 Vue.use(Router);
 
@@ -45,6 +47,18 @@ export default new Router({
       path: '/lobby/:id?',
       name: 'Lobby',
       component: Lobby,
+      props: true,
+    },
+    {
+      path: '/drawgame/creator/:id',
+      name: 'DrawCreator',
+      component: DrawCreator,
+      props: true,
+    },
+    {
+      path: '/drawgame/viewer/:id',
+      name: 'DrawViewer',
+      component: DrawViewer,
       props: true,
     },
   ],
