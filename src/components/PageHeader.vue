@@ -92,6 +92,10 @@
 </script>
 
 <style scoped lang="scss">
+  .navbar {
+    z-index: 40;
+  }
+
   .navbar-brand {
     color: white;
     font-weight: bold;
