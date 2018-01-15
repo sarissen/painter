@@ -1,18 +1,19 @@
 <template>
   <div id="app">
-    <page-header></page-header>
+    <page-header />
     <router-view />
   </div>
 </template>
 
 <script>
+  import 'bootstrap';
+
   import axios from 'axios';
   import PageHeader from './components/PageHeader';
 
   axios.interceptors.request.use((config) => {
     const token = sessionStorage.getItem('token');
     const result = config;
-    // eslint-disable-next-line
     console.log('interceptor');
     if (token) {
       if (config.headers) {
@@ -23,7 +24,6 @@
     }
     return result;
   }, (error) => {
-    // eslint-disable-next-line
     console.log('interceptor error');
     return Promise.reject(error);
   });

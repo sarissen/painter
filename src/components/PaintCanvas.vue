@@ -1,13 +1,16 @@
 <template>
   <div ref="container" class="container-fluid">
-    <div class="button-bar">
-      <a href="javascript:void(0)" @click="save" title="Save"><i class="fa fa-2x fa-save"></i></a>
-      <a href="javascript:void(0)" @click="download" title="Download image"><i class="fa fa-2x fa-download"></i></a>
-      <input type="file" id="upload" style="display: none;" @change="addFile" title="Upload image"><label for="upload"><i class="fa fa-2x fa-upload"></i></label>
-      <i class="fa fa-2x fa-trash" @click="clear" title="Clear"></i>
-      <i class="fa fa-2x fa-eraser" :class="[state === 'erasing' ? 'eraser-active' : '']" @click="toggleEraser" title="Erase"></i>
-      <input type="color" v-model="color" title="Choose color">
-      <input class="form-control" type="number" min="1" v-model="lineWidth" title="Choose linewidth">
+    <div class="button-bar" v-bind:class="{ barclosed: !bar_closed }">
+      <div class="container">
+        <a href="javascript:void(0)" @click="save" title="Save"><i class="fa fa-2x fa-save"></i></a>
+        <a href="javascript:void(0)" @click="download" title="Download image"><i class="fa fa-2x fa-download"></i></a>
+        <input type="file" id="upload" style="display: none;" @change="addFile" title="Upload image"/><label for="upload"><i class="fa fa-2x fa-upload"></i></label>
+        <i class="fa fa-2x fa-trash" @click="clear" title="Clear"></i>
+        <i class="fa fa-2x fa-eraser" :class="[state === 'erasing' ? 'eraser-active' : '']" @click="toggleEraser" title="Erase"></i>
+        <input type="color" v-model="color" title="Choose color"/>
+        <input class="form-control" type="number" min="1" v-model="lineWidth" title="Choose linewidth"/>
+        <a href="javascript:void(0)" @click="toggleButtonBar" class="toggle-bar"><i class="fa fa-chevron-up fa-lg"></i></a>
+      </div>
     </div>
     <div v-if="showAlert" class="alert alert-success" role="alert">
       Image successfully saved to gallery!
@@ -37,6 +40,7 @@
         state: 'drawing',
         shared: store.state,
         showAlert: false,
+        bar_closed: true,
       };
     },
     methods: {
@@ -46,7 +50,7 @@
         this.$refs.canvas.height = this.$refs.container.offsetHeight;
         this.loadImage(dataUrl);
       },
-      loadImage(image = 'https://dl.dropboxusercontent.com/s/65pw702ltkue5ep/darth-vader.jpg') {
+      loadImage(image) {
         this.clear();
         const canvas = this.$refs.canvas;
         const context = canvas.getContext('2d');
@@ -55,6 +59,7 @@
 
         imageObj.onload = () => {
           context.drawImage(imageObj, (canvas.width / 2) - (imageObj.width / 2), (canvas.height / 2) - (imageObj.height / 2));
+          this.$emit('canvas-change', this.$refs.canvas.toDataURL());
         };
         imageObj.src = image;
       },
@@ -97,6 +102,7 @@
           } else if (this.state === 'erasing') {
             this.erasePath(this.prevPosition, this.currPosition);
           }
+          this.$emit('canvas-change', this.$refs.canvas.toDataURL());
         }
       },
       drawPath(startPosition, endPosition) {
@@ -170,12 +176,15 @@
       clear() {
         const canvas = this.$refs.canvas;
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        this.$emit('canvas-change', this.$refs.canvas.toDataURL());
+      },
+      toggleButtonBar() {
+        this.bar_closed = !this.bar_closed;
       },
     },
     mounted() {
       this.resize();
       window.addEventListener('resize', this.resize, false);
-      this.loadImage();
       document.body.addEventListener('touchstart', (e) => {
         if (e.target === this.$refs.canvas) {
           e.preventDefault();
@@ -202,16 +211,22 @@
     left: 0;
   }
 
+  .container {
+    position: relative;
+  }
+
   .container-fluid {
     padding: 0;
     height: 100%;
     position: relative;
 
     .button-bar {
+      transition: all .1s ease-in-out;
+      margin-top: 0;
       text-align: left;
       padding: 10px 20px;
       z-index: 20;
-      position: absolute;
+      box-shadow: 0 5px 5px 0 rgba(0,0,0,.1);
 
       i {
         margin-right: 16px;
@@ -233,6 +248,14 @@
       }
     }
 
+    .barclosed {
+      margin-top: -72px;
+
+      @media (max-width: 563px) {
+        margin-top: -110px;
+      }
+    }
+
     .alert {
       position: relative;
       top: 100px;
@@ -246,5 +269,52 @@
 
   a {
     display: inline-block;
+  }
+
+  .toggle-bar {
+    top: 0;
+    padding: 0 5px;
+    right: 16px;
+    position: absolute;
+    line-height: 48px;
+    color: #000;
+    transition: all .1s ease-in-out;
+
+    i {
+      margin-right: 0 !important;
+    }
+
+    &:hover::before {
+      content: 'Hide tools';
+      text-align: center;
+      position: absolute;
+      top: 12px;
+      right: calc(100% + 10px);
+      width: 115px;
+      line-height: 1.5;
+      border-radius: 5px;
+      color: white;
+      background: rgba(0,0,0,.7);
+    }
+  }
+
+  .barclosed .toggle-bar {
+    top: 72px;
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,.3);
+    z-index: 60;
+    background: white;
+    border-radius: 5px;
+
+    i {
+      transform: rotate(180deg);
+    }
+
+    &:hover::before {
+      content: 'Display tools';
+    }
+
+    @media (max-width: 563px) {
+      top: 110px;
+    }
   }
 </style>

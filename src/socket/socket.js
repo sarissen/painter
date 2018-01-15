@@ -26,12 +26,15 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('Client has disconnected');
-    socket.broadcast.emit('disconnected', members[socket.id]);
+    if (members.hasOwnProperty(socket.id)) {
+      socket.broadcast.to(members[socket.id].room).emit('disconnected', members[socket.id].member);
+    }
+    delete members[socket.id];
   });
 
   socket.on('new', (member) => {
     const identifier = stringGen(10);
-    members[socket.id] = member;
+    members[socket.id] = { member, room: identifier };
 
     socket.join(identifier);
     console.log(`Created room ${identifier}`);
@@ -40,14 +43,79 @@ io.on('connection', (socket) => {
 
   socket.on('join', (identifier, member) => {
     socket.join(identifier);
-    members[socket.id] = member;
+    members[socket.id] = { member, room: identifier };
     console.log(`${member} joined room ${identifier}`);
-    socket.broadcast.emit('joined', member);
+    socket.broadcast.to(identifier).emit('joined', member);
   });
 
   socket.on('member', (member) => {
     console.log(`${member} is sending over member data`);
-    socket.broadcast.emit('member', member);
+    if (members.hasOwnProperty(socket.id)) {
+      socket.broadcast.to(members[socket.id].room).emit('member', member);
+    }
+  });
+
+  socket.on('starting', () => {
+    console.log('Starting a game');
+    if (members.hasOwnProperty(socket.id)) {
+      socket.broadcast.to(members[socket.id].room).emit('starting');
+    }
+  });
+
+  socket.on('canvas', (canvas) => {
+    console.log('Received a canvas');
+    if (members.hasOwnProperty(socket.id)) {
+      socket.broadcast.to(members[socket.id].room).emit('canvas', canvas);
+    }
+  });
+
+  socket.on('word', (word) => {
+    console.log('Received a word');
+    if (members.hasOwnProperty(socket.id)) {
+      socket.broadcast.to(members[socket.id].room).emit('word', word);
+    }
+  });
+
+  socket.on('requestWord', () => {
+    console.log('Received a word request');
+    if (members.hasOwnProperty(socket.id)) {
+      socket.broadcast.to(members[socket.id].room).emit('requestWord');
+    }
+  });
+
+  socket.on('done', (count) => {
+    console.log('Received a done');
+    if (members.hasOwnProperty(socket.id)) {
+      const room = members[socket.id].room;
+      let roomTotal = 0;
+      let done = 0;
+      members[socket.id].done = true;
+      io.in(members[socket.id].room).emit('done', count, members[socket.id].member);
+      Object.keys(members).forEach((member) => {
+        if (members[member].room === room) {
+          roomTotal += 1;
+          if (members[member].hasOwnProperty('done') && members[member].done === true) {
+            done += 1;
+          }
+        }
+      });
+      if (done === roomTotal - 1) {
+        Object.keys(members).forEach((member) => {
+          if (members[member].room === room) {
+            members[member].done = false;
+          }
+        });
+        io.in(members[socket.id].room).emit('gameDone');
+      }
+    }
+  });
+
+  socket.on('rejoin', (member, identifier) => {
+    if (!members.hasOwnProperty(socket.id)) {
+      console.log('Attempting rejoin');
+      socket.join(identifier);
+      members[socket.id] = { member, room: identifier };
+    }
   });
 });
 

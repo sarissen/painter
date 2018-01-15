@@ -51,8 +51,6 @@
 </template>
 
 <script>
-  import 'bootstrap/js/src/tab';
-
   import axios from 'axios';
   import store from './../classes/Store';
 

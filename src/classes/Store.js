@@ -8,6 +8,7 @@ const store = {
     clientSecret: process.env.CLIENT_SECRET,
     socket: process.env.ENABLE_SOCKETIO ? io(`${window.location.hostname}:3000`) : null,
     user: {},
+    openModal: false,
   },
   /* setMessageAction(newValue) {
     if (this.debug) {

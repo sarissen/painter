@@ -18,6 +18,10 @@ class Utils {
   static isEmpty(obj) {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   }
+
+  static sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
 
 export default Utils;

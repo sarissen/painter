@@ -1,6 +1,8 @@
 <template>
-  <div class="container-fluid" style="margin-top: 20px;">
-    <img style="max-width: 100%;margin:auto;margin-bottom: 40px;" :src="image.path" :alt="image.id">
+  <div>
+    <share :image_path=this.image.path :gallery_path=$route.path></share>
+    <div class="container-fluid" style="margin-top: 20px;">
+      <img style="max-width: 100%;margin:auto;margin-bottom: 40px;" :src="image.path" :alt="image.id">
 
     <div class="row justify-content-center mb-4">
       <div class="col-auto" v-if="image.author">
@@ -71,6 +73,7 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -78,9 +81,13 @@
   import $ from 'jquery';
   import axios from 'axios';
   import store from './../classes/Store';
+  import Share from './Share';
 
   export default {
     name: 'gallery-image',
+    components: {
+      Share,
+    },
     props: ['id'],
     data() {
       return {
