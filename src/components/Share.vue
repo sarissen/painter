@@ -1,12 +1,13 @@
 <template>
 	<div v-if="openModal" class="card">
-    <meta property="og:title" content="My painting"/>
-    <meta property="og:image" content={this.image_path)}/>
     <div class="card-body">
       <h5 class="card-title">Share your creation</h5>
       <div v-if="isSharedOnImgur">
         <p>Your image was successfully shared on imgur!</p>
-        <a href={this.imgur.url} class="btn">See it here</a>
+        <a v-bind:href='imgur.url' target="_blank" class="btn">See it here</a>
+      </div>
+      <div v-else-if="error">
+        <p>An error occcured. We were not able to share your awesome creation on the web.</p>
       </div>
       <div v-else>
         <a href="javascript:void(0)" @click="shareOnFB" class="btn btn-facebook">
@@ -34,6 +35,7 @@
         imgur: {
           shared: false,
           url: null,
+          error: false,
         },
       };
     },
@@ -44,9 +46,13 @@
       isSharedOnImgur() {
         return this.imgur.shared;
       },
+      error() {
+        return this.imgur.error;
+      }
     },
     methods: {
       shareOnFB() {
+
         FB.ui({
           method: 'share',
           display: 'popup',
@@ -56,12 +62,13 @@
         });
       },
       shareOnImgur() {
-        axios.post('https://api.imgur.com/3/image', String(this.image_path), {
+        axios.post('https://api.imgur.com/3/image', this.image_path, {
           headers: { Authorization: 'Client-ID d13240715f3f9b5' },
         }).then((response) => {
-          console.log('valid');
           this.imgur.shared = response;
-          this.imgur.url = response.data.link;
+          this.imgur.url = 'https://imgur.com/' + response.data.data.id;
+        }).catch((error) => {
+          this.imgur.error = true;
         });
       },
       closeModal() {
@@ -70,7 +77,17 @@
         // reset shared state
         this.imgur.shared = false;
         this.imgur.url = null;
+        this.imgur.error = false;
       },
+    },
+    metaInfo: {
+      meta: [
+        { property: 'og:url', content: document.URL },
+        { property: 'og:type', content: 'painting' },
+        { property: 'og:title', content: 'My painting' },
+        { property: 'og:description', content: 'A painting made in a canvas' },
+        { property: 'og:image', content: this.image_path },
+      ]
     },
   };
 </script>
