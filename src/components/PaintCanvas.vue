@@ -222,7 +222,7 @@
     position: relative;
 
     .button-bar {
-      transition: all 1s ease-in-out;
+      transition: all .1s ease-in-out;
       margin-top: 0;
       text-align: left;
       padding: 10px 20px;
@@ -279,7 +279,7 @@
     position: absolute;
     line-height: 48px;
     color: #000;
-    transition: all 1s ease-in-out;
+    transition: all .1s ease-in-out;
 
     i {
       margin-right: 0 !important;
