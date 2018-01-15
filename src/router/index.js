@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Meta from 'vue-meta';
 import PaintCanvas from '@/components/PaintCanvas';
 import Gallery from '@/components/Gallery';
 import GalleryImage from '@/components/GalleryImage';
@@ -10,6 +11,7 @@ import DrawCreator from '@/components/DrawCreator';
 import DrawViewer from '@/components/DrawViewer';
 
 Vue.use(Router);
+Vue.use(Meta);
 
 export default new Router({
   routes: [
