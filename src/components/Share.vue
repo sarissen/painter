@@ -25,7 +25,7 @@
 <script>
   import axios from 'axios';
   import store from './../classes/Store';
-  
+
   export default {
     name: 'Share',
     props: ['image_path', 'gallery_path'],
@@ -48,16 +48,15 @@
       },
       error() {
         return this.imgur.error;
-      }
+      },
     },
     methods: {
       shareOnFB() {
-
         FB.ui({
           method: 'share',
           display: 'popup',
           href: document.URL,
-        }, function (response) {
+        }, (response) => {
           console.log(response);
         });
       },
@@ -69,6 +68,7 @@
           this.imgur.url = 'https://imgur.com/' + response.data.data.id;
         }).catch((error) => {
           this.imgur.error = true;
+          console.log(error);
         });
       },
       closeModal() {
@@ -87,7 +87,7 @@
         { property: 'og:title', content: 'My painting' },
         { property: 'og:description', content: 'A painting made in a canvas' },
         { property: 'og:image', content: this.image_path },
-      ]
+      ],
     },
   };
 </script>

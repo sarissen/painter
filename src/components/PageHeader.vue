@@ -21,8 +21,6 @@
 </template>
 
 <script>
-    // import 'bootstrap/js/src/collapse';
-
     import axios from 'axios';
     import Store from './../classes/Store';
 

@@ -6,6 +6,8 @@
 </template>
 
 <script>
+  import 'bootstrap';
+
   import axios from 'axios';
   import PageHeader from './components/PageHeader';
 
