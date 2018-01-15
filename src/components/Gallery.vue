@@ -5,7 +5,7 @@
         <a class="nav-link active" href="#" data-toggle="tab" v-on:click="getImages(orderBy, false)">All images</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="tab" v-on:click="getImages(orderBy, true)">Your images</a>
+        <a class="nav-link" v-bind:class="{disabled: loggedOut()}" href="#" data-toggle="tab" v-on:click="getImages(orderBy, true)">Your images</a>
       </li>
     </ul>
 
@@ -88,6 +88,9 @@
             // eslint-disable-next-line
             console.log(error);
           });
+      },
+      loggedOut() {
+        return Object.keys(this.shared.user).length === 0 && this.shared.user.constructor === Object;
       },
     },
   };
