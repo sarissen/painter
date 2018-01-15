@@ -5,6 +5,7 @@
     <i v-if="done" class="fa fa-check" style="color: lawngreen"></i>
     <div v-if="done">Done in {{ count }} seconds</div>
     <scoreboard />
+    <h1 v-if="gameDone">Game finished start a new game by creating a new lobby.</h1>
     <img :src="dataUrl" alt="nodata" />
   </div>
 </template>
@@ -27,6 +28,7 @@
         start: 0,
         count: 0,
         done: false,
+        gameDone: false,
       };
     },
     mounted() {
@@ -40,6 +42,9 @@
         const socket = this.shared.socket;
         socket.on('canvas', (canvas) => {
           this.dataUrl = canvas;
+        });
+        socket.on('gameDone', () => {
+          this.gameDone = true;
         });
         socket.on('word', (word) => {
           console.log(`Received a word: ${word}`);

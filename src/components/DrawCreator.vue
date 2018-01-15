@@ -2,6 +2,7 @@
   <div class="page">
     <div class="choice">Draw a: {{ choice }}</div>
     <scoreboard />
+    <h1 v-if="gameDone">Game finished start a new game by creating a new lobby.</h1>
     <paint-canvas @canvas-change="canvasChanged"/>
   </div>
 </template>
@@ -23,6 +24,7 @@
       return {
         choice: '',
         shared: store.state,
+        gameDone: false,
       };
     },
     methods: {
@@ -34,6 +36,9 @@
         const socket = this.shared.socket;
         socket.on('requestWord', () => {
           this.shared.socket.emit('word', this.choice);
+        });
+        socket.on('gameDone', () => {
+          this.gameDone = true;
         });
       },
     },

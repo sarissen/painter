@@ -86,7 +86,27 @@ io.on('connection', (socket) => {
   socket.on('done', (count) => {
     console.log('Received a done');
     if (members.hasOwnProperty(socket.id)) {
+      const room = members[socket.id].room;
+      let roomTotal = 0;
+      let done = 0;
+      members[socket.id].done = true;
       io.in(members[socket.id].room).emit('done', count, members[socket.id].member);
+      Object.keys(members).forEach((member) => {
+        if (members[member].room === room) {
+          roomTotal += 1;
+          if (members[member].hasOwnProperty('done') && members[member].done === true) {
+            done += 1;
+          }
+        }
+      });
+      if (done === roomTotal - 1) {
+        Object.keys(members).forEach((member) => {
+          if (members[member].room === room) {
+            members[member].done = false;
+          }
+        });
+        io.in(members[socket.id].room).emit('gameDone');
+      }
     }
   });
 

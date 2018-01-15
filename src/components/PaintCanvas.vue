@@ -50,7 +50,7 @@
         this.$refs.canvas.height = this.$refs.container.offsetHeight;
         this.loadImage(dataUrl);
       },
-      loadImage(image = 'https://dl.dropboxusercontent.com/s/65pw702ltkue5ep/darth-vader.jpg') {
+      loadImage(image) {
         this.clear();
         const canvas = this.$refs.canvas;
         const context = canvas.getContext('2d');
@@ -179,13 +179,12 @@
         this.$emit('canvas-change', this.$refs.canvas.toDataURL());
       },
       toggleButtonBar() {
-        this.bar_closed = (this.bar_closed) ? false : true;
+        this.bar_closed = !this.bar_closed;
       },
     },
     mounted() {
       this.resize();
       window.addEventListener('resize', this.resize, false);
-      this.loadImage();
       document.body.addEventListener('touchstart', (e) => {
         if (e.target === this.$refs.canvas) {
           e.preventDefault();
@@ -253,7 +252,7 @@
       margin-top: -72px;
 
       @media (max-width: 563px) {
-        margin-top: -110px; 
+        margin-top: -110px;
       }
     }
 
